@@ -53,3 +53,17 @@ if (!user || !(await user.isValidPassword(password))) {
         res.status(400).send(err.message)
     }
 }
+export const profileController=async(req,res)=>{
+   console.log(req.user);
+    try{
+        const user=await userModel.findOne({email:req.user.email}).select('-password');
+        if(!user){
+            return res.status(404).json({message:'User not found'});
+        }
+        res.status(200).json({
+            user:req.user,
+        });
+    }catch(err){
+        res.status(400).send(err.message);
+    }
+}
